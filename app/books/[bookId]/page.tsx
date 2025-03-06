@@ -1,9 +1,6 @@
 "use client";
 
-import type React from "react";
 
-import { use, useState } from "react";
-import { Button } from "@/components/ui/button";
 import {
   Card,
   CardContent,
@@ -11,23 +8,15 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Textarea } from "@/components/ui/textarea";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
+import { placeholderImage } from "@/utils/placeholderImage";
+import { useQuery } from "@tanstack/react-query";
 import { StarIcon } from "lucide-react";
 import Image from "next/image";
-import { useQuery } from "@tanstack/react-query";
-import { getBook } from "./actions";
-import { placeholderImage } from "@/utils/placeholderImage";
+import { use, useState } from "react";
+import AddReviewForm, { Review } from "./_components/add-review-form";
+import { getBook, getReviews } from "./actions";
 
-// Types for our data
-type Review = {
-  id: string;
-  userName: string;
-  rating: number;
-  comment: string;
-  date: string;
-};
+
 
 // Updated Book type to match the new schema
 type Book = {
@@ -38,7 +27,7 @@ type Book = {
   genre: string;
   publishedDate: string;
   description: string;
-  coverImage?: string; // Optional as it's not in the schema but used in UI
+  cover?: string; // Optional as it's not in the schema but used in UI
 };
 
 type Props = {
@@ -56,10 +45,9 @@ export default function BookPage({ params }: Props) {
       return book;
     },
   });
-  console.log(book);
 
   // Sample reviews data
-  const [reviews, setReviews] = useState<Review[]>([
+  const [reviewss, setReviews] = useState<Review[]>([
     {
       id: "1",
       userName: "Alex Johnson",
@@ -86,65 +74,18 @@ export default function BookPage({ params }: Props) {
     },
   ]);
 
-  // Form state
-  const [newReview, setNewReview] = useState({
-    userName: "",
-    rating: 0,
-    comment: "",
-  });
-
-  // Handle form input changes
-  const handleInputChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => {
-    const { name, value } = e.target;
-    setNewReview((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
-  };
-
-  // Handle rating selection
-  const handleRatingChange = (rating: number) => {
-    setNewReview((prev) => ({
-      ...prev,
-      rating,
-    }));
-  };
-
-  // Handle form submission
-  const handleSubmitReview = (e: React.FormEvent) => {
-    e.preventDefault();
-
-    // Validate form
-    if (!newReview.userName || !newReview.comment || newReview.rating === 0) {
-      alert("Please fill out all fields and provide a rating");
-      return;
+  const {data: reviews} = useQuery({
+    queryKey: ["reviews", bookId],
+    queryFn: async () => {
+      const reviews = await getReviews(bookId as string);
+      return reviews;
     }
+  })
+  console.log(reviews)
 
-    // Create new review
-    const review: Review = {
-      id: Date.now().toString(),
-      userName: newReview.userName,
-      rating: newReview.rating,
-      comment: newReview.comment,
-      date: new Date().toLocaleDateString("en-US", {
-        year: "numeric",
-        month: "long",
-        day: "numeric",
-      }),
-    };
 
-    // Add to reviews
-    setReviews((prev) => [review, ...prev]);
 
-    // Reset form
-    setNewReview({
-      userName: "",
-      rating: 0,
-      comment: "",
-    });
-  };
+  
 
   return (
     <div className="container mx-auto px-4 py-8 max-w-6xl">
@@ -206,95 +147,32 @@ export default function BookPage({ params }: Props) {
               {calculateAverageRating().toFixed(1)}
             </span>
             <span className="text-muted-foreground ml-2">
-              ({reviews.length} reviews)
+              ({reviews?.length} reviews)
             </span>
           </div>
         </div>
       </div>
 
       {/* Add Review Section */}
-      <Card className="mb-12">
-        <CardHeader>
-          <CardTitle>Write a Review</CardTitle>
-          <CardDescription>
-            Share your thoughts about this book with other readers
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          <form onSubmit={handleSubmitReview}>
-            <div className="grid gap-6">
-              <div>
-                <Label htmlFor="userName">Your Name</Label>
-                <Input
-                  id="userName"
-                  name="userName"
-                  value={newReview.userName}
-                  onChange={handleInputChange}
-                  placeholder="Enter your name"
-                  className="mt-1"
-                />
-              </div>
-
-              <div>
-                <Label>Rating</Label>
-                <div className="flex mt-1">
-                  {[1, 2, 3, 4, 5].map((rating) => (
-                    <button
-                      key={rating}
-                      type="button"
-                      onClick={() => handleRatingChange(rating)}
-                      className="mr-1"
-                    >
-                      <StarIcon
-                        className={`h-6 w-6 ${
-                          newReview.rating >= rating
-                            ? "text-yellow-500 fill-yellow-500"
-                            : "text-gray-300"
-                        }`}
-                      />
-                    </button>
-                  ))}
-                </div>
-              </div>
-
-              <div>
-                <Label htmlFor="comment">Your Review</Label>
-                <Textarea
-                  id="comment"
-                  name="comment"
-                  value={newReview.comment}
-                  onChange={handleInputChange}
-                  placeholder="What did you think about this book?"
-                  className="mt-1"
-                  rows={4}
-                />
-              </div>
-            </div>
-
-            <Button type="submit" className="mt-6">
-              Submit Review
-            </Button>
-          </form>
-        </CardContent>
-      </Card>
+      <AddReviewForm setReviews={setReviews} bookId={bookId as string} />
 
       {/* Reviews Section */}
       <div>
         <h2 className="text-2xl font-bold mb-6">Reader Reviews</h2>
 
-        {reviews.length === 0 ? (
+        {reviews?.length === 0 ? (
           <p className="text-center text-muted-foreground py-8">
             No reviews yet. Be the first to review this book!
           </p>
         ) : (
           <div className="space-y-6">
-            {reviews.map((review) => (
-              <Card key={review.id}>
+            {reviews?.map((review) => (
+              <Card key={review._id}>
                 <CardHeader>
                   <div className="flex justify-between items-start">
                     <div>
-                      <CardTitle>{review.userName}</CardTitle>
-                      <CardDescription>{review.date}</CardDescription>
+                      <CardTitle>{review.name}</CardTitle>
+                      <CardDescription>{review._createdDate.toLocaleDateString()}</CardDescription>
                     </div>
                     <div className="flex">
                       {[1, 2, 3, 4, 5].map((star) => (
@@ -311,7 +189,7 @@ export default function BookPage({ params }: Props) {
                   </div>
                 </CardHeader>
                 <CardContent>
-                  <p>{review.comment}</p>
+                  <p>{review.review}</p>
                 </CardContent>
               </Card>
             ))}
@@ -323,8 +201,8 @@ export default function BookPage({ params }: Props) {
 
   // Helper function to calculate average rating
   function calculateAverageRating() {
-    if (reviews.length === 0) return 0;
-    const sum = reviews.reduce((total, review) => total + review.rating, 0);
-    return sum / reviews.length;
+    if (reviews?.length === 0) return 0;
+    const sum = reviews?.reduce((total, review) => total + review.rating, 0);
+    return sum / reviews?.length;
   }
 }
