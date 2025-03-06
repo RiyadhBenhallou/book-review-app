@@ -1,6 +1,5 @@
 "use client";
 
-
 import {
   Card,
   CardContent,
@@ -15,8 +14,7 @@ import Image from "next/image";
 import { use, useState } from "react";
 import AddReviewForm, { Review } from "./_components/add-review-form";
 import { getBook, getReviews } from "./actions";
-
-
+import BackButton from "./_components/back-button";
 
 // Updated Book type to match the new schema
 type Book = {
@@ -74,21 +72,20 @@ export default function BookPage({ params }: Props) {
     },
   ]);
 
-  const {data: reviews} = useQuery({
+  const { data: reviews } = useQuery({
     queryKey: ["reviews", bookId],
     queryFn: async () => {
       const reviews = await getReviews(bookId as string);
       return reviews;
-    }
-  })
-  console.log(reviews)
-
-
-
-  
+    },
+  });
+  console.log(reviews);
 
   return (
     <div className="container mx-auto px-4 py-8 max-w-6xl">
+      <div className="mb-5">
+        <BackButton />
+      </div>
       {/* Book Details Section */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
         <div className="md:col-span-1">
@@ -172,7 +169,9 @@ export default function BookPage({ params }: Props) {
                   <div className="flex justify-between items-start">
                     <div>
                       <CardTitle>{review.name}</CardTitle>
-                      <CardDescription>{review._createdDate.toLocaleDateString()}</CardDescription>
+                      <CardDescription>
+                        {review._createdDate.toLocaleDateString()}
+                      </CardDescription>
                     </div>
                     <div className="flex">
                       {[1, 2, 3, 4, 5].map((star) => (

@@ -12,24 +12,70 @@ import Link from "next/link";
 import { truncateString } from "@/utils/format/truncateString";
 import Image from "next/image";
 import { placeholderImage } from "@/utils/placeholderImage";
+import { Input } from "@/components/ui/input";
+import { redirect } from "next/navigation";
+import { X } from "lucide-react";
 
-export default async function Books() {
-  const { items: books } = await client.items.query("Books").find();
-  console.log(books);
+export default async function Books({
+  searchParams,
+}: {
+  searchParams: Promise<{ search: string }>;
+}) {
+  const { search } = await searchParams;
+  const { items: books } = await client.items
+    .query("Books")
+    .startsWith("name", search || "")
+    .find();
+  // const { items: books } = await client.items.query("Books").find();
 
   return (
-    <div className="container mx-auto p-4 min-h-screen flex justify-center items-center flex-col mt-12">
-      <h1 className="font-bold text-2xl mb-6">Books</h1>
-      <div className="grid grid-cols-3 gap-4" >
+    <div className="container mx-auto p-4 min-h-screen mt-8">
+      <div className="max-w-5xl mx-auto flex justify-between items-center mb-8 pr-8">
+        <h1 className="font-bold text-2xl mb-6">Books</h1>
+        <form
+          className="flex items-center gap-1"
+          action={async (formData: FormData) => {
+            "use server";
+            const search = formData.get("search");
+            if (search) redirect(`/books?search=${search}`);
+          }}
+        >
+          <Input
+            name="search"
+            defaultValue={search || ""}
+            placeholder="Search for a book..."
+            className="placeholder:text-xs"
+          />
+          <Button>Search</Button>
+          {search && (
+            <Button asChild size={"icon"} variant={"destructive"}>
+              <Link href={"/books"}>
+                <X />
+              </Link>
+            </Button>
+          )}
+        </form>
+        <Button>Add a book</Button>
+      </div>
+      <div className="grid grid-cols-3 gap-4 mx-auto max-w-5xl">
         {books.map((book) => (
-          <Card key={book._id} className="w-[220px] flex flex-col justify-between items-center">
+          <Card
+            key={book._id}
+            className="w-[300px] flex flex-col justify-between items-center"
+          >
             <CardHeader>
               <CardTitle>{book.name}</CardTitle>
               {/* <CardDescription>{truncateString(book.description)}</CardDescription> */}
             </CardHeader>
             <CardContent>
-              <Image height={250} width={200} src={book?.cover || placeholderImage} alt={`${book.name} cover`} className="w-[200px] h-[250px]" />
-              <p>{book.author}</p>
+              <Image
+                height={300}
+                width={250}
+                src={book?.cover || placeholderImage}
+                alt={`${book.name} cover`}
+                className="w-[250px] h-[300px] rounded-lg"
+              />
+              <p className="mt-2">{book.author}</p>
             </CardContent>
             <CardFooter className="w-full">
               <Button asChild>
@@ -38,6 +84,11 @@ export default async function Books() {
             </CardFooter>
           </Card>
         ))}
+        {books.length === 0 && (
+          <div className="flex justify-center items-center min-h-[300px] col-span-3">
+            <p>No books found...</p>
+          </div>
+        )}
       </div>
     </div>
   );
