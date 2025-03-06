@@ -14,6 +14,7 @@ import { Button } from "@/components/ui/button";
 import { client } from "@/lib/wix";
 import { addReview } from "../actions";
 import { toast } from "sonner";
+import { QueryClient, useQueryClient } from "@tanstack/react-query";
 
 // Types for our data
 export type Review = {
@@ -49,6 +50,7 @@ export default function AddReviewForm({
     }));
   };
 
+  const queryClient = useQueryClient();
   // Handle rating selection
   const handleRatingChange = (rating: number) => {
     setNewReview((prev) => ({
@@ -97,6 +99,7 @@ export default function AddReviewForm({
         comment: "",
       });
       toast.success("Review added successfully");
+      queryClient.invalidateQueries({ queryKey: ["reviews"] });
     });
   };
   return (
