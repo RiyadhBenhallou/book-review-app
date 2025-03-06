@@ -1,11 +1,9 @@
-import { env } from "@/env";
 import { items } from "@wix/data";
 import { createClient, OAuthStrategy } from "@wix/sdk";
 
-
 export const client = createClient({
-    modules: items,
-    auth: OAuthStrategy({
-        clientId: env.WIX_CLIENT_ID
-    })
-})
+  modules: { items },
+  auth: OAuthStrategy({
+    clientId: process.env.WIX_CLIENT_ID as string,
+  }),
+});
