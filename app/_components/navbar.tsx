@@ -8,7 +8,7 @@ export default function Navbar() {
         <div className="container mx-auto px-4 py-4 max-w-6xl flex items-center justify-between">
             <Link href={'/'} className="flex items-center gap-1">
             <BookHeart className="text-pink-700" />
-            <div className="text-xl font-bold">Boo<span className="text-pink-700">g</span>store</div>
+            <div className="text-xl font-bold font-dancing">Book<span className="text-pink-700">C</span>lub</div>
             </Link>
             <div className="flex items-center gap-4">
             <Link href={'/books'}>Books</Link>

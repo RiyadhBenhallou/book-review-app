@@ -70,11 +70,11 @@ export default async function Books({
             </CardHeader>
             <CardContent>
               <Image
-                height={300}
+                height={350}
                 width={250}
                 src={book?.cover || placeholderImage}
                 alt={`${book.name} cover`}
-                className="w-[250px] h-[300px] rounded-lg"
+                className="w-[250px] h-[350px] rounded-lg"
               />
               <p className="mt-2">{book.author}</p>
             </CardContent>
