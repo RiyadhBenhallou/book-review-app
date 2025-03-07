@@ -15,6 +15,7 @@ import { placeholderImage } from "@/utils/placeholderImage";
 import { Input } from "@/components/ui/input";
 import { redirect } from "next/navigation";
 import { X } from "lucide-react";
+import AddBookDialog from "./_components/add-book-dialog";
 
 export default async function Books({
   searchParams,
@@ -55,7 +56,7 @@ export default async function Books({
             </Button>
           )}
         </form>
-        <Button>Add a book</Button>
+        <AddBookDialog />
       </div>
       <div className="grid grid-cols-3 gap-4 mx-auto max-w-5xl">
         {books.map((book) => (

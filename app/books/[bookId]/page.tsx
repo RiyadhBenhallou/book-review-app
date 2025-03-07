@@ -44,34 +44,6 @@ export default function BookPage({ params }: Props) {
     },
   });
 
-  // Sample reviews data
-  const [reviewss, setReviews] = useState<Review[]>([
-    {
-      id: "1",
-      userName: "Alex Johnson",
-      rating: 5,
-      comment:
-        "This book changed my perspective on life. The concept is fascinating and the execution is flawless.",
-      date: "January 15, 2023",
-    },
-    {
-      id: "2",
-      userName: "Sam Taylor",
-      rating: 4,
-      comment:
-        "A thought-provoking read that makes you reflect on your own choices. I couldn't put it down!",
-      date: "February 3, 2023",
-    },
-    {
-      id: "3",
-      userName: "Jordan Lee",
-      rating: 5,
-      comment:
-        "Beautifully written with characters that feel real. The philosophical questions it raises stayed with me long after finishing.",
-      date: "March 20, 2023",
-    },
-  ]);
-
   const { data: reviews } = useQuery({
     queryKey: ["reviews", bookId],
     queryFn: async () => {
@@ -151,7 +123,7 @@ export default function BookPage({ params }: Props) {
       </div>
 
       {/* Add Review Section */}
-      <AddReviewForm setReviews={setReviews} bookId={bookId as string} />
+      <AddReviewForm bookId={bookId as string} />
 
       {/* Reviews Section */}
       <div>

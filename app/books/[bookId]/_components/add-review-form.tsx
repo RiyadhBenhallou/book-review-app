@@ -25,13 +25,7 @@ export type Review = {
   date: string;
 };
 
-export default function AddReviewForm({
-  setReviews,
-  bookId,
-}: {
-  setReviews: React.Dispatch<React.SetStateAction<Review[]>>;
-  bookId: string;
-}) {
+export default function AddReviewForm({ bookId }: { bookId: string }) {
   const [pending, startTransition] = useTransition();
   // Form state
   const [newReview, setNewReview] = useState({
@@ -90,7 +84,6 @@ export default function AddReviewForm({
       }
 
       // Add to reviews
-      setReviews((prev) => [review, ...prev]);
 
       // Reset form
       setNewReview({
