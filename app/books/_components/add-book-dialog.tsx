@@ -17,7 +17,7 @@ export default function AddBookDialog() {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button>Add a book</Button>
+        <Button size={"sm"}>Add a book</Button>
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>
