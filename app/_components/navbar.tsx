@@ -19,10 +19,10 @@ export default function Navbar() {
         {pathname === "/books" && (
           <>
             <div className="flex items-center gap-4">
-            <Button size={'sm'} variant="link" asChild>
+              <Button size={"sm"} variant="link" asChild>
                 <Link href={"/"}>Home</Link>
               </Button>
-              <Button size={'sm'} variant="link" asChild>
+              <Button size={"sm"} variant="link" asChild>
                 <Link href={"/books"}>Books</Link>
               </Button>
             </div>
@@ -32,9 +32,11 @@ export default function Navbar() {
           <>
             <div className="flex flex-col gap-2 min-[400px]:flex-row">
               <Button size={"sm"} variant="outline">
-                Explore Books
+                <Link href="/books">Explore Books</Link>
               </Button>
-              <Button size={'sm'}>Get Started</Button>
+              <Button size={"sm"} asChild>
+                <Link href="/books">Get Started</Link>
+              </Button>
             </div>
           </>
         )}
