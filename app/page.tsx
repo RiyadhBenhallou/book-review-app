@@ -1,6 +1,6 @@
-import { Button } from "@/components/ui/button"
-import { BookOpen, Users, Star } from "lucide-react"
-import Link from "next/link"
+import { Button } from "@/components/ui/button";
+import { BookOpen, Users, Star } from "lucide-react";
+import Link from "next/link";
 
 export default function BookClubLanding() {
   return (
@@ -17,16 +17,17 @@ export default function BookClubLanding() {
                 </span>
               </h1>
               <p className="text-muted-foreground md:text-xl">
-                Discover your next favorite book with our community of passionate readers. Share reviews, join
-                discussions, and track your reading journey.
+                Discover your next favorite book with our community of
+                passionate readers. Share reviews, join discussions, and track
+                your reading journey.
               </p>
             </div>
             <div className="flex flex-col gap-2 min-[400px]:flex-row">
               <Button size="lg" asChild>
                 <Link href="/books">Get Started</Link>
-                </Button>
+              </Button>
               <Button size="lg" variant="outline" asChild>
-              <Link href="/books">Explore Books</Link>
+                <Link href="/books">Explore Books</Link>
               </Button>
             </div>
             <div className="flex flex-wrap justify-center items-center gap-4 text-sm">
@@ -60,7 +61,8 @@ export default function BookClubLanding() {
                 ?
               </h2>
               <p className="max-w-[900px] text-muted-foreground md:text-xl">
-                Our platform offers everything you need to enhance your reading experience
+                Our platform offers everything you need to enhance your reading
+                experience
               </p>
             </div>
           </div>
@@ -71,7 +73,8 @@ export default function BookClubLanding() {
               </div>
               <h3 className="text-xl font-bold">Track Your Reading</h3>
               <p className="text-center text-muted-foreground">
-                Keep a digital bookshelf of what you've read, want to read, and are currently reading.
+                Keep a digital bookshelf of what you&apos;ve read, want to read,
+                and are currently reading.
               </p>
             </div>
             <div className="flex flex-col items-center space-y-4 rounded-lg border p-6">
@@ -80,7 +83,8 @@ export default function BookClubLanding() {
               </div>
               <h3 className="text-xl font-bold">Share Reviews</h3>
               <p className="text-center text-muted-foreground">
-                Write and share your thoughts on books with a community of fellow readers.
+                Write and share your thoughts on books with a community of
+                fellow readers.
               </p>
             </div>
             <div className="flex flex-col items-center space-y-4 rounded-lg border p-6">
@@ -89,7 +93,8 @@ export default function BookClubLanding() {
               </div>
               <h3 className="text-xl font-bold">Join Discussions</h3>
               <p className="text-center text-muted-foreground">
-                Participate in book clubs and discussions about your favorite titles and authors.
+                Participate in book clubs and discussions about your favorite
+                titles and authors.
               </p>
             </div>
           </div>
@@ -107,11 +112,12 @@ export default function BookClubLanding() {
               </span>
               . All rights reserved.
             </p>
-            <p className="text-xs text-muted-foreground mt-1">Made with ❤️ by Riyadh Benhallou</p>
+            <p className="text-xs text-muted-foreground mt-1">
+              Made with ❤️ by Riyadh Benhallou
+            </p>
           </div>
         </div>
       </footer>
     </div>
-  )
+  );
 }
-

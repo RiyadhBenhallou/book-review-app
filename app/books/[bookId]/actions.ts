@@ -8,10 +8,12 @@ export async function getBook(bookId: string) {
 }
 
 export async function getReviews(bookId: string) {
-  const reviews = await client.items.query("Reviews").eq("bookId", bookId).find();
-  return reviews;
+  const reviews = await client.items
+    .query("Reviews")
+    .eq("bookId", bookId)
+    .find();
+  return reviews.items;
 }
-
 
 export async function addReview(
   review: { userName: string; rating: number; comment: string },

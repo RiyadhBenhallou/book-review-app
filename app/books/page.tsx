@@ -1,20 +1,18 @@
-import { client } from "@/lib/wix";
+import { Button } from "@/components/ui/button";
 import {
   Card,
   CardContent,
-  CardDescription,
   CardFooter,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import Link from "next/link";
-import { truncateString } from "@/utils/format/truncateString";
-import Image from "next/image";
-import { placeholderImage } from "@/utils/placeholderImage";
 import { Input } from "@/components/ui/input";
-import { redirect } from "next/navigation";
+import { client } from "@/lib/wix";
+import { placeholderImage } from "@/utils/placeholderImage";
 import { X } from "lucide-react";
+import Image from "next/image";
+import Link from "next/link";
+import { redirect } from "next/navigation";
 import AddBookDialog from "./_components/add-book-dialog";
 
 export default async function Books({

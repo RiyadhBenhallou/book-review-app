@@ -11,22 +11,22 @@ import { placeholderImage } from "@/utils/placeholderImage";
 import { useQuery } from "@tanstack/react-query";
 import { StarIcon } from "lucide-react";
 import Image from "next/image";
-import { use, useState } from "react";
-import AddReviewForm, { Review } from "./_components/add-review-form";
-import { getBook, getReviews } from "./actions";
+import { use } from "react";
+import AddReviewForm from "./_components/add-review-form";
 import BackButton from "./_components/back-button";
+import { getBook, getReviews } from "./actions";
 
 // Updated Book type to match the new schema
-type Book = {
-  _id: string;
-  name: string;
-  author: string;
-  isbn: string;
-  genre: string;
-  publishedDate: string;
-  description: string;
-  cover?: string; // Optional as it's not in the schema but used in UI
-};
+// type Book = {
+//   _id: string;
+//   name: string;
+//   author: string;
+//   isbn: string;
+//   genre: string;
+//   publishedDate: string;
+//   description: string;
+//   cover?: string; // Optional as it's not in the schema but used in UI
+// };
 
 type Props = {
   params: Promise<{ [key: string]: string | string[] | undefined }>;
@@ -142,7 +142,7 @@ export default function BookPage({ params }: Props) {
                     <div>
                       <CardTitle>{review.name}</CardTitle>
                       <CardDescription>
-                        {review._createdDate.toLocaleDateString()}
+                        {review._createdDate?.toLocaleDateString()}
                       </CardDescription>
                     </div>
                     <div className="flex">
@@ -173,7 +173,8 @@ export default function BookPage({ params }: Props) {
   // Helper function to calculate average rating
   function calculateAverageRating() {
     if (reviews?.length === 0) return 0;
-    const sum = reviews?.reduce((total, review) => total + review.rating, 0);
-    return sum / reviews?.length;
+    const sum =
+      reviews?.reduce((total, review) => total + review.rating, 0) ?? 0;
+    return sum / (reviews?.length ?? 1);
   }
 }

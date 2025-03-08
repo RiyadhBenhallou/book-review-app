@@ -1,3 +1,4 @@
+import { Button } from "@/components/ui/button";
 import {
   Card,
   CardContent,
@@ -5,16 +6,14 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Textarea } from "@/components/ui/textarea";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { useState, useTransition } from "react";
+import { Textarea } from "@/components/ui/textarea";
+import { useQueryClient } from "@tanstack/react-query";
 import { Loader2Icon, StarIcon } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { client } from "@/lib/wix";
-import { addReview } from "../actions";
+import { useState, useTransition } from "react";
 import { toast } from "sonner";
-import { QueryClient, useQueryClient } from "@tanstack/react-query";
+import { addReview } from "../actions";
 
 // Types for our data
 export type Review = {
@@ -65,20 +64,11 @@ export default function AddReviewForm({ bookId }: { bookId: string }) {
       }
 
       // Create new review
-      const review: Review = {
-        id: Date.now().toString(),
-        userName: newReview.userName,
-        rating: newReview.rating,
-        comment: newReview.comment,
-        date: new Date().toLocaleDateString("en-US", {
-          year: "numeric",
-          month: "long",
-          day: "numeric",
-        }),
-      };
+
       try {
         await addReview(newReview, bookId);
-      } catch (error) {
+      } catch (e) {
+        console.log(e);
         toast.error("Failed to add review. Please try again later.");
         return;
       }

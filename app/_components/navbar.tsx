@@ -2,8 +2,7 @@
 import { Button } from "@/components/ui/button";
 import { BookHeart } from "lucide-react";
 import Link from "next/link";
-import AddBookDialog from "../books/_components/add-book-dialog";
-import { usePathname, useRouter } from "next/navigation";
+import { usePathname } from "next/navigation";
 
 export default function Navbar() {
   const pathname = usePathname();
